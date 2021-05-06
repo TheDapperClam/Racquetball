@@ -1,0 +1,93 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Themes/Theme_Main.tres" type="Theme" id=1]
+[ext_resource path="res://Fonts/Custom Fonts/goodbyeDespair_Head.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scripts/PauseMenu.cs" type="Script" id=3]
+[ext_resource path="res://Scenes/Levels/Menu_Main.tscn" type="PackedScene" id=4]
+
+[node name="Canvas Layer" type="CanvasLayer"]
+pause_mode = 2
+
+[node name="Pause Menu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+AllowPause = true
+joypadStartNodeNodePath = NodePath("VBoxContainer/Resume Button")
+mainMenuScene = ExtResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="Pause Menu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Pause Menu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -519.0
+custom_fonts/font = ExtResource( 2 )
+text = "Pause"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pause Menu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -128.0
+margin_top = -360.0
+margin_right = 128.0
+margin_bottom = 360.0
+custom_constants/separation = 32
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Resume Button" type="Button" parent="Pause Menu/VBoxContainer"]
+margin_top = 286.0
+margin_right = 256.0
+margin_bottom = 314.0
+focus_neighbour_bottom = NodePath("../Main Menu Button")
+text = "Resume"
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Main Menu Button" type="Button" parent="Pause Menu/VBoxContainer"]
+margin_top = 346.0
+margin_right = 256.0
+margin_bottom = 374.0
+focus_neighbour_top = NodePath("../Resume Button")
+focus_neighbour_bottom = NodePath("../Quit Button")
+text = "Main Menu"
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Quit Button" type="Button" parent="Pause Menu/VBoxContainer"]
+margin_top = 406.0
+margin_right = 256.0
+margin_bottom = 434.0
+focus_neighbour_top = NodePath("../Main Menu Button")
+text = "Quit"
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Pause Menu/VBoxContainer/Resume Button" to="Pause Menu" method="SetPause" binds= [ false, false ]]
+[connection signal="pressed" from="Pause Menu/VBoxContainer/Main Menu Button" to="Pause Menu" method="LoadMainMenu"]
+[connection signal="pressed" from="Pause Menu/VBoxContainer/Quit Button" to="Pause Menu" method="Quit"]

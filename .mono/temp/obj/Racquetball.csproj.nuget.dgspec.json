@@ -1,0 +1,49 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj": {}
+  },
+  "projects": {
+    "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj",
+        "projectName": "Racquetball",
+        "projectPath": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj",
+        "packagesPath": "C:\\Users\\James\\.nuget\\packages\\",
+        "outputPath": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\.mono\\temp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\James\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

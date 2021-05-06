@@ -1,0 +1,8 @@
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\bin\Debug\Racquetball.dll
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\bin\Debug\Racquetball.pdb
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\obj\Debug\Racquetball.csprojAssemblyReference.cache
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\obj\Debug\Racquetball.AssemblyInfoInputs.cache
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\obj\Debug\Racquetball.AssemblyInfo.cs
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\obj\Debug\Racquetball.csproj.CoreCompileInputs.cache
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\obj\Debug\Racquetball.dll
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Raquetball\.mono\temp\obj\Debug\Racquetball.pdb

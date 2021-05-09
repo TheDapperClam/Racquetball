@@ -115,10 +115,13 @@ texture = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall4"]
 shape = SubResource( 2 )
-[connection signal="OnDie" from="Player" to="Camera2D/Foreground/Score Entry" method="ShowIfNewHighScore"]
 [connection signal="OnDie" from="Player" to="Game Mode" method="Restart"]
+[connection signal="OnDie" from="Player" to="Camera2D/Foreground/Score Entry" method="ShowIfNewHighScore"]
+[connection signal="on_respawn" from="Player" to="Camera2D/Background/Score" method="Reset"]
 [connection signal="OnBallHit" from="Player/Racket" to="Camera2D/Background/Score" method="AddPoints" binds= [ 1 ]]
 
 [editable path="Camera2D/Foreground/Score Entry"]
 
 [editable path="Player"]
+
+[editable path="Player/Ball"]

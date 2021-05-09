@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj": {}
+    "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Racquetball\\Racquetball.csproj": {}
   },
   "projects": {
-    "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj": {
+    "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Racquetball\\Racquetball.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj",
+        "projectUniqueName": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Racquetball\\Racquetball.csproj",
         "projectName": "Racquetball",
-        "projectPath": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\Racquetball.csproj",
+        "projectPath": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Racquetball\\Racquetball.csproj",
         "packagesPath": "C:\\Users\\James\\.nuget\\packages\\",
-        "outputPath": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Raquetball\\.mono\\temp\\obj\\",
+        "outputPath": "D:\\TheDapperClam\\Documents\\Dev\\Projects\\Godot\\Racquetball\\.mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"

@@ -285,6 +285,7 @@ tracks/8/keys = {
 
 [node name="Racket" type="Area2D"]
 pause_mode = 1
+collision_mask = 3
 script = ExtResource( 3 )
 animationPlayerNodePath = NodePath("AnimationPlayer")
 raycastNodePath = NodePath("RayCast2D")

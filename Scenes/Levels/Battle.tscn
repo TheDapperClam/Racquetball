@@ -86,7 +86,6 @@ inputId = 1
 cameraNodePath = NodePath("../../Camera2D")
 
 [node name="Ball" parent="." instance=ExtResource( 2 )]
-Served = true
 cameraNodePath = NodePath("../Camera2D")
 
 [node name="Wall" type="StaticBody2D" parent="."]
@@ -128,9 +127,9 @@ texture = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall4"]
 shape = SubResource( 1 )
-[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 1 Life" to="Game Mode" method="Restart"]
-[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 2 Life" to="Game Mode" method="Restart"]
+[connection signal="OnDie" from="Player" to="Game Mode" method="Restart"]
 [connection signal="OnDieBegin" from="Player" to="Camera2D/CanvasLayer/Player 1 Life" method="ModifyLife" binds= [ -1 ]]
+[connection signal="OnDie" from="Player2" to="Game Mode" method="Restart"]
 [connection signal="OnDieBegin" from="Player2" to="Camera2D/CanvasLayer/Player 2 Life" method="ModifyLife" binds= [ -1 ]]
 
 [editable path="Player"]

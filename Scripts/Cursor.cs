@@ -13,6 +13,10 @@ public class Cursor : Node2D
         Input.SetMouseMode ( paused ? Input.MouseMode.Visible : Input.MouseMode.Hidden );
     }
 
+    public override void _EnterTree () {
+        Input.SetMouseMode ( Input.MouseMode.Hidden );
+    }
+
     public override void _ExitTree () {
         Input.SetMouseMode ( Input.MouseMode.Visible );
     }
@@ -28,7 +32,6 @@ public class Cursor : Node2D
     }
 
     public override void _Ready () {
-        Input.SetMouseMode ( Input.MouseMode.Hidden );
         aimNode = GetNodeOrNull<Node2D> ( aimNodeNodePath );
         orbitalPosition = Position;
         PauseMenu.Current.Connect ( "pause_changed", this, nameof ( PauseChanged ) );

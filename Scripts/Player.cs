@@ -1,6 +1,6 @@
 using Godot;
 
-public class Player : KinematicBody2D
+public class Player : Respawnable
 {
     private const float AIM_DEADZONE = 0.5f;
     private const float DIE_SHAKE_INTENSITY = 3.0f;
@@ -23,10 +23,8 @@ public class Player : KinematicBody2D
     [Export] private readonly int inputId;
     [Export] private readonly NodePath racketNodePath;
     [Export] private readonly NodePath cursorNodePath;
-    [Export] private readonly NodePath animationPlayerNodePath;
     private Racket racket;
     private Cursor cursor;
-    private AnimationPlayer animationPlayer;
     private float aimUp;
     private float aimDown;
     private float aimLeft;
@@ -36,7 +34,6 @@ public class Player : KinematicBody2D
     private float moveLeft;
     private float moveRight;
     private bool joyConnected;
-    private bool isDead;
 
     private void CheckJoyConnection ( int device ) {
         bool connected = device - GameMode.Current.MaxPlayers + Input.GetConnectedJoypads ().Count >= 0;
@@ -47,13 +44,15 @@ public class Player : KinematicBody2D
     }
 
     public async void Die ( float horizontalDirection ) {
+        if ( isDead )
+            return;
         isDead = true;
         EmitSignal ( nameof ( OnDieBegin ) );
-        animationPlayer.Play ( DIE_ANIMATION );
         float newDirectionSign = horizontalDirection > 0.0f ? 1.0f : -1.0f;
         float newHorizontalScale = Mathf.Ceil ( Mathf.Abs ( horizontalDirection ) ) * newDirectionSign;
         Scale = new Vector2 ( newHorizontalScale, 1.0f );
         Feedback.Current.ScreenShake ( DIE_SHAKE_INTENSITY, DIE_SHAKE_TIME, newDirectionSign * Mathf.Pi );
+        animationPlayer.Play ( DIE_ANIMATION );
         await ToSignal ( animationPlayer, "animation_finished" );
         EmitSignal ( nameof ( OnDie ) );
     }
@@ -108,12 +107,12 @@ public class Player : KinematicBody2D
         MoveAndSlide ( movement * MoveSpeed );
     }
 
-    public override void _Ready () {
+    protected override void _RespawnableReady () {
         racket = GetNode<Racket> ( racketNodePath );
         cursor = GetNode<Cursor> ( cursorNodePath );
-        animationPlayer = GetNode<AnimationPlayer> ( animationPlayerNodePath );
         cursor.InputId = inputId;
         Input.Singleton.Connect ( "joy_connection_changed", this, nameof ( JoyConnectionChanged ) );
         CheckJoyConnection ( inputId );
+        GD.Print ( Name + " starting animation is " + startingAnimation );
     }
 }

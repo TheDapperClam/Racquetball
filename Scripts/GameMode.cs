@@ -17,6 +17,6 @@ public class GameMode : Node
         await ToSignal ( GetTree (), "idle_frame" );
         if ( PauseMenu.Current.Paused )
             await ToSignal ( PauseMenu.Current, "pause_changed" );
-        GetTree ().ReloadCurrentScene ();
+        Respawnable.RespawnAll ();
     }
 }

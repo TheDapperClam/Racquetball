@@ -24,6 +24,7 @@ public class Racket : Area2D
     private Camera2D camera;
     private bool isSwinging;
     private bool reverseSwing;
+    private bool ballHit;
     private float swingTime;
     private Vector2 swingDirection = Vector2.Down;
 
@@ -33,7 +34,8 @@ public class Racket : Area2D
     }
 
     private void BodyEntered ( Node body ) {
-        if ( body.GetType () == typeof ( Ball ) ) {
+        if ( !ballHit && body.GetType () == typeof ( Ball ) ) {
+            ballHit = true;
             EmitSignal ( ( (Ball) body ).Served ? nameof ( OnBallHit ) : nameof ( OnBallServed ) );
             Feedback.Current.Pause ( hitPauseTime );
             ( (Ball) body ).SetDirection ( swingDirection, ballHitPower );
@@ -41,8 +43,10 @@ public class Racket : Area2D
     }
 
     public void BufferSwing () {
-        if ( GetTime () > swingTime )
+        if ( GetTime () > swingTime ) {
+            ballHit = false;
             isSwinging = true;
+        }
     }
 
     private float GetTime () {
@@ -68,16 +72,16 @@ public class Racket : Area2D
     private void Swing () {
         if ( !isSwinging )
             return;
+        if ( ballToServe != null && !ballToServe.Served ) {
+            Vector2 servePoint = raycast.IsColliding () ? raycast.GetCollisionPoint () : GlobalPosition + swingDirection * serveOffset;
+            ballToServe.SetAsToplevel ( true );
+            ballToServe.GlobalPosition = servePoint;
+        }
         float time = GetTime ();
         animationPlayer.Play ( reverseSwing ? SWING_LEFT_ANIMATION : SWING_RIGHT_ANIMATION );
         reverseSwing = !reverseSwing;
         swingTime = time + swingCooldown;
         Feedback.Current.ScreenShake ( swingShakeIntensity, 0.1f );
-        if ( ballToServe != null ) {
-            Vector2 servePoint = raycast.IsColliding () ? raycast.GetCollisionPoint () : GlobalPosition + swingDirection * serveOffset;
-            ballToServe.Serve ( servePoint );
-            ballToServe = null;
-        }
         isSwinging = false;
     }
 }

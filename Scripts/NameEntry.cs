@@ -7,7 +7,7 @@ public class NameEntry : Label
     private const char UNDO_CHAR = '<';
     private const char BLANK_CHAR = '_';
 
-    private readonly StringBuilder sb = new StringBuilder ( new string ( BLANK_CHAR, LENGTH ), LENGTH );
+    private readonly StringBuilder sb = new StringBuilder ();
     private int enterPosition;
 
     public void Enter ( string character ) {
@@ -24,6 +24,14 @@ public class NameEntry : Label
     }
 
     public override void _Ready () {
+        Reset ();
+        Connect ( "visibility_changed", this, nameof ( Reset ) );
+    }
+
+    private void Reset () {
+        enterPosition = 0;
+        sb.Clear ();
+        sb.Append ( BLANK_CHAR, LENGTH );
         Text = sb.ToString ();
     }
 }

@@ -44,6 +44,8 @@ public class Ball : Respawnable
     }
 
     public void Serve () {
+        if ( Served )
+            return;
         CollisionMask = SERVED_MASK;
         Served = true;
     }

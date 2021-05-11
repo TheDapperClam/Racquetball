@@ -12,9 +12,7 @@ public class Feedback : Node
     private readonly Timer unshakeTimer = new Timer ();
 
     public void Pause ( float duration ) {
-        unpauseTimer.Stop ();
-        unpauseTimer.WaitTime = duration;
-        unpauseTimer.Start ();
+        StartTimer ( unpauseTimer, duration );
         GetTree ().Paused = true;
     }
 
@@ -29,13 +27,17 @@ public class Feedback : Node
     }
 
     public void ScreenShake ( float intensity, float duration, float overrideAngle = float.MinValue ) {
-        unshakeTimer.Stop ();
-        unshakeTimer.WaitTime = duration;
-        unshakeTimer.Start ();
+        StartTimer ( unshakeTimer, duration );
         rng.Randomize ();
         float angle = overrideAngle == float.MinValue ? rng.RandfRange ( 0.0f, 1.0f ) * Mathf.Pi : overrideAngle;
         Vector2 direction = new Vector2 ( Mathf.Cos ( angle ), Mathf.Sin ( angle ) );
         camera.Offset = direction * intensity;
+    }
+
+    private void StartTimer ( Timer timer, float duration ) {
+        timer.Stop ();
+        timer.WaitTime = duration;
+        timer.Start ();
     }
 
     private void UnpauseTimerTimeout () {

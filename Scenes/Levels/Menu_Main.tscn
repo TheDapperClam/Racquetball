@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Levels/Battle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/SinglePlayer.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Themes/Theme_Main.tres" type="Theme" id=4]
 [ext_resource path="res://Fonts/Custom Fonts/goodbyeDespair_Head.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Scenes/Levels/Scoreboard.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Levels/Menu_Options.tscn" type="PackedScene" id=7]
 
 [node name="Main Menu" type="Control"]
 anchor_right = 1.0
@@ -60,9 +61,9 @@ __meta__ = {
 }
 
 [node name="Single Player Button" type="Button" parent="VBoxContainer"]
-margin_top = 256.0
+margin_top = 226.0
 margin_right = 256.0
-margin_bottom = 284.0
+margin_bottom = 254.0
 text = "Solo"
 expand_icon = true
 __meta__ = {
@@ -70,9 +71,9 @@ __meta__ = {
 }
 
 [node name="Battle Button" type="Button" parent="VBoxContainer"]
-margin_top = 316.0
+margin_top = 286.0
 margin_right = 256.0
-margin_bottom = 344.0
+margin_bottom = 314.0
 text = "Battle"
 expand_icon = true
 __meta__ = {
@@ -80,25 +81,39 @@ __meta__ = {
 }
 
 [node name="Highscores Button" type="Button" parent="VBoxContainer"]
-margin_top = 376.0
+margin_top = 346.0
 margin_right = 256.0
-margin_bottom = 404.0
+margin_bottom = 374.0
 text = "High Scores"
 expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Quit Button" type="Button" parent="VBoxContainer"]
-margin_top = 436.0
+[node name="Options Button" type="Button" parent="VBoxContainer"]
+margin_top = 406.0
 margin_right = 256.0
-margin_bottom = 464.0
+margin_bottom = 434.0
+text = "Options"
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Quit Button" type="Button" parent="VBoxContainer"]
+margin_top = 466.0
+margin_right = 256.0
+margin_bottom = 494.0
 text = "Quit"
 expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Options Menu" parent="." instance=ExtResource( 7 )]
+visible = false
 [connection signal="pressed" from="VBoxContainer/Single Player Button" to="." method="LoadSinglePlayerMode"]
 [connection signal="pressed" from="VBoxContainer/Battle Button" to="." method="LoadBattleMode"]
 [connection signal="pressed" from="VBoxContainer/Highscores Button" to="CanvasLayer/Scoreboard" method="show"]
+[connection signal="pressed" from="VBoxContainer/Options Button" to="Options Menu" method="show"]
 [connection signal="pressed" from="VBoxContainer/Quit Button" to="." method="Quit"]

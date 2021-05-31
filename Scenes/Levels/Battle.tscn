@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Sprites/life.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Prefabs/Ball.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://Scripts/GameMode.cs" type="Script" id=5]
 [ext_resource path="res://Scripts/LifeCounter.cs" type="Script" id=6]
 [ext_resource path="res://Sprites/wall.png" type="Texture" id=7]
+[ext_resource path="res://Themes/Theme_Main.tres" type="Theme" id=8]
+[ext_resource path="res://Fonts/Custom Fonts/goodbyeDespair_Head.tres" type="DynamicFont" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
@@ -16,6 +18,7 @@ extents = Vector2( 8, 8 )
 [node name="Game Mode" type="Node2D" parent="."]
 script = ExtResource( 5 )
 MaxPlayers = 2
+lifeCounterNodePaths = [ NodePath("../Camera2D/CanvasLayer/Player 1 Life"), NodePath("../Camera2D/CanvasLayer/Player 2 Life") ]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -63,6 +66,33 @@ rect_scale = Vector2( 5, 5 )
 texture = ExtResource( 1 )
 stretch_mode = 2
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Victory Label P1" type="Label" parent="Camera2D/CanvasLayer"]
+visible = false
+anchor_right = 1.0
+margin_top = 128.0
+margin_bottom = 198.0
+theme = ExtResource( 8 )
+custom_fonts/font = ExtResource( 9 )
+text = "P1 Wins"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Victory Label P2" type="Label" parent="Camera2D/CanvasLayer"]
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+anchor_right = 1.0
+margin_top = 128.0
+margin_bottom = 198.0
+theme = ExtResource( 8 )
+custom_fonts/font = ExtResource( 9 )
+text = "P2 Wins"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -127,9 +157,13 @@ texture = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall4"]
 shape = SubResource( 1 )
-[connection signal="OnDie" from="Player" to="Game Mode" method="Restart"]
+[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 1 Life" to="Camera2D/CanvasLayer/Victory Label P2" method="show"]
+[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 1 Life" to="Game Mode" method="Reload" binds= [ 5.0 ]]
+[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 2 Life" to="Camera2D/CanvasLayer/Victory Label P1" method="show"]
+[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 2 Life" to="Game Mode" method="Reload" binds= [ 5.0 ]]
+[connection signal="OnDie" from="Player" to="Game Mode" method="Restart" binds= [ false ]]
 [connection signal="OnDieBegin" from="Player" to="Camera2D/CanvasLayer/Player 1 Life" method="ModifyLife" binds= [ -1 ]]
-[connection signal="OnDie" from="Player2" to="Game Mode" method="Restart"]
+[connection signal="OnDie" from="Player2" to="Game Mode" method="Restart" binds= [ false ]]
 [connection signal="OnDieBegin" from="Player2" to="Camera2D/CanvasLayer/Player 2 Life" method="ModifyLife" binds= [ -1 ]]
 
 [editable path="Player"]

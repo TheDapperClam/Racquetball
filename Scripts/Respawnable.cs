@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-public class Respawnable : KinematicBody2D
+public abstract class Respawnable : KinematicBody2D
 {
     private static readonly List<Respawnable> currentRespawnables = new List<Respawnable> ();
 
@@ -42,9 +42,11 @@ public class Respawnable : KinematicBody2D
 
     public virtual void Respawn () {
         GD.Print ( "Respawning: " + Name );
-        GetParent ().RemoveChild ( this );
-        startingParent.AddChild ( this );
-        Owner = startingParent;
+        if ( GetParent () != startingParent ) {
+            GetParent ().RemoveChild ( this );
+            startingParent.AddChild ( this );
+            Owner = startingParent;
+        }
         isDead = false;
         Position = startingPosition;
         Rotation = startingRotation;

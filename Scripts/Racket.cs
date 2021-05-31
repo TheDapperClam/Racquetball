@@ -25,6 +25,7 @@ public class Racket : Area2D
     private bool isSwinging;
     private bool reverseSwing;
     private bool ballHit;
+    private bool cancelSwing;
     private float swingTime;
     private Vector2 swingDirection = Vector2.Down;
 
@@ -34,7 +35,7 @@ public class Racket : Area2D
     }
 
     private void BodyEntered ( Node body ) {
-        if ( !ballHit && body.GetType () == typeof ( Ball ) ) {
+        if ( !cancelSwing && !ballHit && body.GetType () == typeof ( Ball ) ) {
             ballHit = true;
             EmitSignal ( ( (Ball) body ).Served ? nameof ( OnBallHit ) : nameof ( OnBallServed ) );
             Feedback.Current.Pause ( hitPauseTime );
@@ -47,6 +48,11 @@ public class Racket : Area2D
             ballHit = false;
             isSwinging = true;
         }
+    }
+
+    public void Cancel () {
+        cancelSwing = true;
+        ballHit = false;
     }
 
     private float GetTime () {
@@ -83,5 +89,6 @@ public class Racket : Area2D
         swingTime = time + swingCooldown;
         Feedback.Current.ScreenShake ( swingShakeIntensity, 0.1f );
         isSwinging = false;
+        cancelSwing = false;
     }
 }

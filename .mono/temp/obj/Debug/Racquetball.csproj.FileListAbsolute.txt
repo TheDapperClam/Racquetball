@@ -11,6 +11,8 @@ D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\bin\Debug\R
 D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.csprojAssemblyReference.cache
 D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.AssemblyInfoInputs.cache
 D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.AssemblyInfo.cs
-D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.csproj.CoreCompileInputs.cache
 D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.dll
 D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.pdb
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\bin\Debug\Newtonsoft.Json.dll
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.csproj.CoreCompileInputs.cache
+D:\TheDapperClam\Documents\Dev\Projects\Godot\Racquetball\.mono\temp\obj\Debug\Racquetball.csproj.CopyComplete

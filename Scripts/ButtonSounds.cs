@@ -11,7 +11,7 @@ public class ButtonSounds : Node
     };
 
     private void ConnectButton ( Node node ) {
-        if ( !node.GetType ().IsAssignableFrom ( typeof ( Button ) ) )
+        if ( node.GetType () != typeof( Button ) )
             return;
         node.Connect ( "pressed", pressedSound, "play" );
         node.Connect ( "focus_entered", hoverSound, "play" );

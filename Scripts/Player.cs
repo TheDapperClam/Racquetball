@@ -107,6 +107,11 @@ public class Player : Respawnable
         MoveAndSlide ( movement * MoveSpeed );
     }
 
+    public override void Respawn () {
+        racket.Cancel ();
+        base.Respawn ();
+    }
+
     protected override void _RespawnableReady () {
         racket = GetNode<Racket> ( racketNodePath );
         cursor = GetNode<Cursor> ( cursorNodePath );

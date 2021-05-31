@@ -66,6 +66,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Options Button" type="Button" parent="Pause Menu/VBoxContainer"]
+visible = false
+margin_top = 316.0
+margin_right = 256.0
+margin_bottom = 344.0
+focus_neighbour_bottom = NodePath("../Main Menu Button")
+disabled = true
+text = "Options"
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Main Menu Button" type="Button" parent="Pause Menu/VBoxContainer"]
 margin_top = 346.0
 margin_right = 256.0

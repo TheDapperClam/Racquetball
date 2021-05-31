@@ -7,7 +7,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 2.0194
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=5]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:position")
 tracks/0/interp = 1
@@ -33,7 +33,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=6]
 length = 0.2
 step = 0.05
 tracks/0/type = "value"
@@ -95,5 +95,5 @@ stream = ExtResource( 3 )
 volume_db = -25.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Idle = SubResource( 2 )
-anims/Squish = SubResource( 3 )
+anims/Idle = SubResource( 5 )
+anims/Squish = SubResource( 6 )

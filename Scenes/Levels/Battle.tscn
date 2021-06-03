@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Sprites/life.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Prefabs/Ball.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Sprites/wall.png" type="Texture" id=7]
 [ext_resource path="res://Themes/Theme_Main.tres" type="Theme" id=8]
 [ext_resource path="res://Fonts/Custom Fonts/goodbyeDespair_Head.tres" type="DynamicFont" id=9]
+[ext_resource path="res://Sounds/success.wav" type="AudioStream" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
@@ -19,6 +20,9 @@ extents = Vector2( 8, 8 )
 script = ExtResource( 5 )
 MaxPlayers = 2
 lifeCounterNodePaths = [ NodePath("../Camera2D/CanvasLayer/Player 1 Life"), NodePath("../Camera2D/CanvasLayer/Player 2 Life") ]
+
+[node name="Victory Sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -159,8 +163,10 @@ texture = ExtResource( 7 )
 shape = SubResource( 1 )
 [connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 1 Life" to="Camera2D/CanvasLayer/Victory Label P2" method="show"]
 [connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 1 Life" to="Game Mode" method="Reload" binds= [ 5.0 ]]
+[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 1 Life" to="Victory Sound" method="play"]
 [connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 2 Life" to="Camera2D/CanvasLayer/Victory Label P1" method="show"]
 [connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 2 Life" to="Game Mode" method="Reload" binds= [ 5.0 ]]
+[connection signal="out_of_life" from="Camera2D/CanvasLayer/Player 2 Life" to="Victory Sound" method="play"]
 [connection signal="OnDie" from="Player" to="Game Mode" method="Restart" binds= [ false ]]
 [connection signal="OnDieBegin" from="Player" to="Camera2D/CanvasLayer/Player 1 Life" method="ModifyLife" binds= [ -1 ]]
 [connection signal="OnDie" from="Player2" to="Game Mode" method="Restart" binds= [ false ]]

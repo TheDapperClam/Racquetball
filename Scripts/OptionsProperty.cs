@@ -9,4 +9,10 @@ public struct OptionsProperty
         ControllingNodePath = controllingNodePath;
         Value = value;
     }
+
+    public OptionsProperty ( string controllingNodePath, string value ) {
+        Name = null;
+        ControllingNodePath = controllingNodePath;
+        Value = value;
+    }
 }

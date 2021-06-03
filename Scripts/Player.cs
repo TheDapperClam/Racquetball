@@ -2,7 +2,6 @@ using Godot;
 
 public class Player : Respawnable
 {
-    private const float AIM_DEADZONE = 0.5f;
     private const float DIE_SHAKE_INTENSITY = 3.0f;
     private const float DIE_SHAKE_TIME = 0.1f;
     private const string MOVE_UP_ACTION = "Move_Up";
@@ -33,13 +32,16 @@ public class Player : Respawnable
     private float moveDown;
     private float moveLeft;
     private float moveRight;
+    private float deadzone;
     private bool joyConnected;
+    private bool moveAiming;
 
     private void CheckJoyConnection ( int device ) {
         bool connected = device - GameMode.Current.MaxPlayers + Input.GetConnectedJoypads ().Count >= 0;
         if ( device == inputId ) {
             joyConnected = connected;
-            cursor.OrbitalMode = connected;
+            if ( !moveAiming )
+                cursor.OrbitalMode = connected;
         }
     }
 
@@ -70,14 +72,18 @@ public class Player : Respawnable
         if ( @event.IsActionPressed ( SWING_ACTION ) && !GetTree ().Paused && !isDead )
             racket.BufferSwing ();
 
-        if ( @event.IsAction ( AIM_UP_ACTION ) )
-            aimUp = @event.GetActionStrength ( AIM_UP_ACTION );
-        if ( @event.IsAction ( AIM_DOWN_ACTION ) )
-            aimDown = @event.GetActionStrength ( AIM_DOWN_ACTION );
-        if ( @event.IsAction ( AIM_LEFT_ACTION ) )
-            aimLeft = @event.GetActionStrength ( AIM_LEFT_ACTION );
-        if ( @event.IsAction ( AIM_RIGHT_ACTION ) )
-            aimRight = @event.GetActionStrength ( AIM_RIGHT_ACTION );
+        string aimUpTarget = moveAiming ? MOVE_UP_ACTION : AIM_UP_ACTION;
+        string aimDownTarget = moveAiming ? MOVE_DOWN_ACTION : AIM_DOWN_ACTION;
+        string aimLeftTarget = moveAiming ? MOVE_LEFT_ACTION : AIM_LEFT_ACTION;
+        string aimRightTarget = moveAiming ? MOVE_RIGHT_ACTION : AIM_RIGHT_ACTION;
+        if ( @event.IsAction ( aimUpTarget ) )
+            aimUp = @event.GetActionStrength ( aimUpTarget );
+        if ( @event.IsAction ( aimDownTarget ) )
+            aimDown = @event.GetActionStrength ( aimDownTarget );
+        if ( @event.IsAction ( aimLeftTarget ) )
+            aimLeft = @event.GetActionStrength ( aimLeftTarget );
+        if ( @event.IsAction ( aimRightTarget ) )
+            aimRight = @event.GetActionStrength ( aimRightTarget );
 
         if ( @event.IsAction ( MOVE_UP_ACTION ) )
             moveUp = @event.GetActionStrength ( MOVE_UP_ACTION );
@@ -96,15 +102,17 @@ public class Player : Respawnable
     public override void _Process ( float delta ) {
         if ( GetTree ().Paused || isDead )
             return;
-        Vector2 movement = new Vector2 ( moveRight - moveLeft, moveDown - moveUp ).Normalized ();
+        Vector2 movement = new Vector2 ( moveRight - moveLeft, moveDown - moveUp );
         Vector2 aimAnalog = new Vector2 ( aimRight - aimLeft, aimDown - aimUp );
-        if ( !joyConnected && inputId == 0 ) {
+        GD.Print ( aimAnalog );
+        if ( !cursor.OrbitalMode && inputId == 0 ) {
             Vector2 mousePos = GetGlobalMousePosition ();
             Vector2 mouseDir = mousePos - GlobalPosition;
             racket.Aim ( mouseDir );
-        } else if ( aimAnalog.Length () > AIM_DEADZONE )
+        } else if ( aimAnalog.Length () > deadzone )
             racket.Aim ( aimAnalog );
-        MoveAndSlide ( movement * MoveSpeed );
+        if ( movement.Length () > deadzone )
+            MoveAndSlide ( movement.Normalized () * MoveSpeed );
     }
 
     public override void Respawn () {
@@ -113,9 +121,12 @@ public class Player : Respawnable
     }
 
     protected override void _RespawnableReady () {
+        moveAiming = OptionsManager.GetProperty<bool> ( string.Format ( "MoveAimingId{0}", inputId ) );
+        deadzone = OptionsManager.GetProperty<float> ( "Deadzone" );
         racket = GetNode<Racket> ( racketNodePath );
         cursor = GetNode<Cursor> ( cursorNodePath );
         cursor.InputId = inputId;
+        cursor.OrbitalMode = moveAiming;
         Input.Singleton.Connect ( "joy_connection_changed", this, nameof ( JoyConnectionChanged ) );
         CheckJoyConnection ( inputId );
         GD.Print ( Name + " starting animation is " + startingAnimation );

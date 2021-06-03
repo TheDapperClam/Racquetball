@@ -2,6 +2,9 @@ using Godot;
 
 public class Menu : Control
 {
+    [Signal] public delegate void on_show ();
+    [Signal] public delegate void on_hide ();
+
     [Export] public bool AllowPause;
 
     [Export] protected NodePath joypadStartNodeNodePath;
@@ -10,6 +13,8 @@ public class Menu : Control
     private Menu previousMenu;
 
     protected void ChangeScene ( PackedScene scene ) {
+        // Since changing to a different scene takes a bit of time, we'll also clean up any garbage that we currently have
+        System.GC.Collect ();
         GetTree ().ChangeSceneTo ( scene );
     }
 
@@ -64,11 +69,13 @@ public class Menu : Control
             currentMenu = this;
             CheckIfShouldFocus ();
             OnShow ();
+            EmitSignal ( nameof ( on_show ) );
         } else {
             if ( previousMenu != null )
                 previousMenu.CheckIfShouldFocus ();
             currentMenu = previousMenu;
             OnHide ();
+            EmitSignal ( nameof ( on_hide ) );
         }
     }
 }

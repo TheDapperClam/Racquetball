@@ -4,14 +4,14 @@ public class Player : Respawnable
 {
     private const float DIE_SHAKE_INTENSITY = 3.0f;
     private const float DIE_SHAKE_TIME = 0.1f;
-    private const string MOVE_UP_ACTION = "Move_Up";
-    private const string MOVE_DOWN_ACTION = "Move_Down";
-    private const string MOVE_LEFT_ACTION = "Move_Left";
-    private const string MOVE_RIGHT_ACTION = "Move_Right";
-    private const string AIM_UP_ACTION = "Aim_Up";
-    private const string AIM_DOWN_ACTION = "Aim_Down";
-    private const string AIM_LEFT_ACTION = "Aim_Left";
-    private const string AIM_RIGHT_ACTION = "Aim_Right";
+    private const string LEFT_STICK_UP_ACTION = "Move_Up";
+    private const string LEFT_STICK_DOWN_ACTION = "Move_Down";
+    private const string LEFT_STICK_LEFT_ACTION = "Move_Left";
+    private const string LEFT_STICK_RIGHT_ACTION = "Move_Right";
+    private const string RIGHT_STICK_UP_ACTION = "Aim_Up";
+    private const string RIGHT_STICK_DOWN_ACTION = "Aim_Down";
+    private const string RIGHT_STICK_LEFT_ACTION = "Aim_Left";
+    private const string RIGHT_STICK_RIGHT_ACTION = "Aim_Right";
     private const string SWING_ACTION = "Fire1";
     private const string DIE_ANIMATION = "Die";
 
@@ -33,7 +33,16 @@ public class Player : Respawnable
     private float moveLeft;
     private float moveRight;
     private float deadzone;
+    private string moveUpAction = LEFT_STICK_UP_ACTION;
+    private string moveDownAction = LEFT_STICK_DOWN_ACTION;
+    private string moveLeftAction = LEFT_STICK_LEFT_ACTION;
+    private string moveRightAction = LEFT_STICK_RIGHT_ACTION;
+    private string aimUpAction = RIGHT_STICK_UP_ACTION;
+    private string aimDownAction = RIGHT_STICK_DOWN_ACTION;
+    private string aimLeftAction = RIGHT_STICK_LEFT_ACTION;
+    private string aimRightAction = RIGHT_STICK_RIGHT_ACTION;
     private bool joyConnected;
+    private bool swapMovement;
     private bool moveAiming;
 
     private void CheckJoyConnection ( int device ) {
@@ -43,6 +52,7 @@ public class Player : Respawnable
             if ( !moveAiming )
                 cursor.OrbitalMode = connected;
         }
+        UpdateMovementActions ();
     }
 
     public async void Die ( float horizontalDirection ) {
@@ -72,27 +82,23 @@ public class Player : Respawnable
         if ( @event.IsActionPressed ( SWING_ACTION ) && !GetTree ().Paused && !isDead )
             racket.BufferSwing ();
 
-        string aimUpTarget = moveAiming ? MOVE_UP_ACTION : AIM_UP_ACTION;
-        string aimDownTarget = moveAiming ? MOVE_DOWN_ACTION : AIM_DOWN_ACTION;
-        string aimLeftTarget = moveAiming ? MOVE_LEFT_ACTION : AIM_LEFT_ACTION;
-        string aimRightTarget = moveAiming ? MOVE_RIGHT_ACTION : AIM_RIGHT_ACTION;
-        if ( @event.IsAction ( aimUpTarget ) )
-            aimUp = @event.GetActionStrength ( aimUpTarget );
-        if ( @event.IsAction ( aimDownTarget ) )
-            aimDown = @event.GetActionStrength ( aimDownTarget );
-        if ( @event.IsAction ( aimLeftTarget ) )
-            aimLeft = @event.GetActionStrength ( aimLeftTarget );
-        if ( @event.IsAction ( aimRightTarget ) )
-            aimRight = @event.GetActionStrength ( aimRightTarget );
+        if ( @event.IsAction ( aimUpAction ) )
+            aimUp = @event.GetActionStrength ( aimUpAction );
+        if ( @event.IsAction ( aimDownAction ) )
+            aimDown = @event.GetActionStrength ( aimDownAction );
+        if ( @event.IsAction ( aimLeftAction ) )
+            aimLeft = @event.GetActionStrength ( aimLeftAction );
+        if ( @event.IsAction ( aimRightAction ) )
+            aimRight = @event.GetActionStrength ( aimRightAction );
 
-        if ( @event.IsAction ( MOVE_UP_ACTION ) )
-            moveUp = @event.GetActionStrength ( MOVE_UP_ACTION );
-        if ( @event.IsAction ( MOVE_DOWN_ACTION ) )
-            moveDown = @event.GetActionStrength ( MOVE_DOWN_ACTION );
-        if ( @event.IsAction ( MOVE_LEFT_ACTION ) )
-            moveLeft = @event.GetActionStrength ( MOVE_LEFT_ACTION );
-        if ( @event.IsAction ( MOVE_RIGHT_ACTION ) )
-            moveRight = @event.GetActionStrength ( MOVE_RIGHT_ACTION );
+        if ( @event.IsAction ( moveUpAction ) )
+            moveUp = @event.GetActionStrength ( moveUpAction );
+        if ( @event.IsAction ( moveDownAction ) )
+            moveDown = @event.GetActionStrength ( moveDownAction );
+        if ( @event.IsAction ( moveLeftAction ) )
+            moveLeft = @event.GetActionStrength ( moveLeftAction );
+        if ( @event.IsAction ( moveRightAction ) )
+            moveRight = @event.GetActionStrength ( moveRightAction );
     }
 
     private void JoyConnectionChanged ( int device, bool connected ) {
@@ -104,7 +110,6 @@ public class Player : Respawnable
             return;
         Vector2 movement = new Vector2 ( moveRight - moveLeft, moveDown - moveUp );
         Vector2 aimAnalog = new Vector2 ( aimRight - aimLeft, aimDown - aimUp );
-        GD.Print ( aimAnalog );
         if ( !cursor.OrbitalMode && inputId == 0 ) {
             Vector2 mousePos = GetGlobalMousePosition ();
             Vector2 mouseDir = mousePos - GlobalPosition;
@@ -121,6 +126,7 @@ public class Player : Respawnable
     }
 
     protected override void _RespawnableReady () {
+        swapMovement = OptionsManager.GetProperty<bool> ( string.Format ( "SwapMoveId{0}", inputId ) );
         moveAiming = OptionsManager.GetProperty<bool> ( string.Format ( "MoveAimingId{0}", inputId ) );
         deadzone = OptionsManager.GetProperty<float> ( "Deadzone" );
         racket = GetNode<Racket> ( racketNodePath );
@@ -130,5 +136,25 @@ public class Player : Respawnable
         Input.Singleton.Connect ( "joy_connection_changed", this, nameof ( JoyConnectionChanged ) );
         CheckJoyConnection ( inputId );
         GD.Print ( Name + " starting animation is " + startingAnimation );
+    }
+
+    private void UpdateMovementActions () {
+        if ( swapMovement ) {
+            moveUpAction = joyConnected ? RIGHT_STICK_UP_ACTION : LEFT_STICK_UP_ACTION;
+            moveDownAction = joyConnected ? RIGHT_STICK_DOWN_ACTION : LEFT_STICK_DOWN_ACTION;
+            moveLeftAction = joyConnected ? RIGHT_STICK_LEFT_ACTION : LEFT_STICK_LEFT_ACTION;
+            moveRightAction = joyConnected ? RIGHT_STICK_RIGHT_ACTION : LEFT_STICK_RIGHT_ACTION;
+        }
+        if ( moveAiming ) {
+            aimUpAction = moveUpAction;
+            aimDownAction = moveDownAction;
+            aimLeftAction = moveLeftAction;
+            aimRightAction = moveRightAction;
+        } else if ( swapMovement ) {
+            aimUpAction = joyConnected ? LEFT_STICK_UP_ACTION : RIGHT_STICK_UP_ACTION;
+            aimDownAction = joyConnected ? LEFT_STICK_DOWN_ACTION : RIGHT_STICK_DOWN_ACTION;
+            aimLeftAction = joyConnected ? LEFT_STICK_LEFT_ACTION : RIGHT_STICK_LEFT_ACTION;
+            aimRightAction = joyConnected ? LEFT_STICK_RIGHT_ACTION : RIGHT_STICK_RIGHT_ACTION;
+        }
     }
 }

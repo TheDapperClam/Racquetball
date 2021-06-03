@@ -21,6 +21,8 @@ public class OptionsManager : Menu
         { "VolumeMaster", new OptionsProperty ( "Master Volume Slider", "0" ) },
         { "MoveAimingId0", new OptionsProperty ( "Move Aiming P1 Checkbox", "False" ) },
         { "MoveAimingId1", new OptionsProperty ( "Move Aiming P2 Checkbox", "False" ) },
+        { "SwapMoveId0", new OptionsProperty ( "Swap Move P1 Checkbox", "False" ) },
+        { "SwapMoveId1", new OptionsProperty ( "Swap Move P2 Checkbox", "False" ) },
         { "Deadzone", new OptionsProperty ( "Deadzone Slider", "0.1" ) }
     };
     private static readonly Dictionary<string, OptionsProperty> tempProperties = new Dictionary<string, OptionsProperty> ();

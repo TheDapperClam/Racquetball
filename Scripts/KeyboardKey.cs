@@ -1,3 +1,6 @@
+/// <summary>
+/// Struct for key data.
+/// </summary>
 public struct KeyboardKey
 {
     public string Text;

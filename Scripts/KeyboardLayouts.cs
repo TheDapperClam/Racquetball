@@ -1,3 +1,6 @@
+/// <summary>
+/// Struct for setting up keyboard layouts.
+/// </summary>
 public struct KeyboardLayouts
 {
     public static readonly KeyboardKey[] Default = new KeyboardKey[] {

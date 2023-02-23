@@ -1,5 +1,8 @@
 using Godot;
 
+/// <summary>
+/// Class for our racquetball ball object
+/// </summary>
 public class Ball : Respawnable
 {
     private const float MINIMUM_BOUNCE_SPEED = 1.0f;
@@ -22,8 +25,11 @@ public class Ball : Respawnable
         KinematicCollision2D collision = MoveAndCollide ( Velocity * delta * 100.0f );
         if ( collision != null ) {
             EmitSignal ( nameof ( OnBodyEntered ) );
+            // We want our ball to ricochet off of the surface that it hit.
             SetDirection ( Velocity.Bounce ( collision.Normal ).Normalized () );
+            // We want to rotate our ball to match the collision surface, but in 90 degree intervals.
             Rotation = Mathf.Stepify ( collision.Normal.Angle (), BOUNCE_STEP_ANGLE );
+            // We shake the screen whenever the ball collides with something in order to make the interaction more impactful.
             Feedback.Current.ScreenShake ( Velocity.Length () * bounceScreenShakeMultiplier, 0.1f, collision.Normal.Angle () );
             animationPlayer.Play ( COLLIDE_ANIMATION );
             if ( collision.Collider.GetType () == typeof ( Player ) ) {
@@ -43,6 +49,9 @@ public class Ball : Respawnable
         camera = GetNode<Camera2D> ( cameraNodePath );
     }
 
+    /// <summary>
+    /// Function for serving our ball, and begin processing physics and game logic.
+    /// </summary>
     public void Serve () {
         if ( Served )
             return;

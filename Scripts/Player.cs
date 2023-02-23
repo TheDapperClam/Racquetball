@@ -45,6 +45,10 @@ public class Player : Respawnable
     private bool swapMovement;
     private bool moveAiming;
 
+    /// <summary>
+    /// Function for checking and setting whether or not a player should be controlled by a connected gamepad.
+    /// </summary>
+    /// <param name="device"></param>
     private void CheckJoyConnection ( int device ) {
         bool connected = device - GameMode.Current.MaxPlayers + Input.GetConnectedJoypads ().Count >= 0;
         if ( device == inputId ) {
@@ -55,6 +59,10 @@ public class Player : Respawnable
         UpdateMovementActions ();
     }
 
+    /// <summary>
+    /// Function for making our player to die.
+    /// </summary>
+    /// <param name="horizontalDirection"></param>
     public async void Die ( float horizontalDirection ) {
         if ( isDead )
             return;
@@ -75,10 +83,11 @@ public class Player : Respawnable
         bool isJoypad = deviceType != typeof ( InputEventKey ) && deviceType != typeof ( InputEventMouseButton );
         if ( isJoypad && Input.GetConnectedJoypads ().Count < GameMode.Current.MaxPlayers )
             device++;
+        // We only want to handle inputs made by this player's assigned input device.
         if ( inputId != device )
             return;
 
-        // We check if the game is paused before swinging so that the player doesn't swing the same frame after the game unpauses
+        // We check if the game is paused before swinging so that the player doesn't swing the same frame after the game unpauses.
         if ( @event.IsActionPressed ( SWING_ACTION ) && !GetTree ().Paused && !isDead )
             racket.BufferSwing ();
 
@@ -101,6 +110,11 @@ public class Player : Respawnable
             moveRight = @event.GetActionStrength ( moveRightAction );
     }
 
+    /// <summary>
+    /// Function for when a gamepad is either connected or disconnected.
+    /// </summary>
+    /// <param name="device"></param>
+    /// <param name="connected"></param>
     private void JoyConnectionChanged ( int device, bool connected ) {
         CheckJoyConnection ( device );
     }
@@ -138,6 +152,9 @@ public class Player : Respawnable
         GD.Print ( Name + " starting animation is " + startingAnimation );
     }
 
+    /// <summary>
+    /// Function for updating our player's movement actions based on their settings.
+    /// </summary>
     private void UpdateMovementActions () {
         if ( swapMovement ) {
             moveUpAction = joyConnected ? RIGHT_STICK_UP_ACTION : LEFT_STICK_UP_ACTION;

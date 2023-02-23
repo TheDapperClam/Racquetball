@@ -1,5 +1,8 @@
 using Godot;
 
+/// <summary>
+/// Class for handling our pause menu UI logic.
+/// </summary>
 public class PauseMenu : Menu
 {
     private const string PAUSE_ACTION = "Pause";
@@ -15,6 +18,9 @@ public class PauseMenu : Menu
             SetPause ( !Paused, !Paused );
     }
 
+    /// <summary>
+    /// Function for returning to the main menu.
+    /// </summary>
     public void LoadMainMenu () {
         SetPause ( false, false );
         ChangeScene ( mainMenuScene );
@@ -25,6 +31,11 @@ public class PauseMenu : Menu
         Hide ();
     }
 
+    /// <summary>
+    /// Function for setting the game's pause state
+    /// </summary>
+    /// <param name="paused"></param>
+    /// <param name="visible"></param>
     public void SetPause ( bool paused, bool visible ) {
         Paused = paused;
         Visible = visible;

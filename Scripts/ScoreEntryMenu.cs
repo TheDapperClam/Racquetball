@@ -1,6 +1,9 @@
 using Godot;
 using System.Collections.Generic;
 
+/// <summary>
+/// Class for handling our high score entry menu UI logic.
+/// </summary>
 public class ScoreEntryMenu : Menu
 {
     [Export] private readonly NodePath highScoresNodePath;
@@ -10,6 +13,9 @@ public class ScoreEntryMenu : Menu
     private Label nameLabel;
     private Score score;
 
+    /// <summary>
+    /// Function for saving our new high score.
+    /// </summary>
     public void Confirm () {
         highScores.Save ( nameLabel.Text );
         Hide ();
@@ -30,6 +36,9 @@ public class ScoreEntryMenu : Menu
         score = GetNode<Score> ( scoreNodePath );
     }
 
+    /// <summary>
+    /// Function for showing our high score entry menu if a previous score was beaten.
+    /// </summary>
     public void ShowIfNewHighScore () {
         List<string> scores = highScores.Load ();
         int lowestScore = (int) HighScores.ParseScore ( scores[ scores.Count - 1 ] )[ 1 ];

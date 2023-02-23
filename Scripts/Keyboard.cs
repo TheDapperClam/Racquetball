@@ -1,6 +1,9 @@
 using Godot;
 using Godot.Collections;
 
+/// <summary>
+/// Class for our on screen keyboard.
+/// </summary>
 public class Keyboard : GridContainer
 {
     [Export] private readonly NodePath nameEntryNodePath;
@@ -8,6 +11,9 @@ public class Keyboard : GridContainer
     private NameEntry nameEntry;
     private Button[,] buttons;
 
+    /// <summary>
+    /// Function for connecting our keyboard keys for navigation.
+    /// </summary>
     private void ConnectButtons () {
         for ( int y = 0; y < buttons.GetLength ( 0 ); y++ ) {
             for ( int x = 0; x < buttons.GetLength ( 1 ); x++ ) {
@@ -28,10 +34,20 @@ public class Keyboard : GridContainer
         }
     }
 
+    /// <summary>
+    /// Function for when our keyboard has gained focus.
+    /// </summary>
     private void FocusEntered () {
+        // Once the entire keyboard has gained focus, focus on the first key.
         GetButton ( 0, 0 ).GrabFocus ();
     }
 
+    /// <summary>
+    /// Function for getting a keyboard key based on its index.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
     private Button GetButton ( int x, int y ) {
         if ( x < 0 || x >= buttons.GetLength ( 1 ) || y < 0 || y >= buttons.GetLength ( 0 ) )
             return null;
@@ -44,6 +60,7 @@ public class Keyboard : GridContainer
         KeyboardKey[] keys = KeyboardLayouts.Default;
         buttons = new Button[ Mathf.CeilToInt ( keys.Length / Columns ), Columns ];
         nameEntry = GetNode<NameEntry> ( nameEntryNodePath );
+        // Now we fill our keyboard with our list of keys.
         for ( int i = 0; i < keys.Length; i++ ) {
             KeyboardKey currentKey = keys[ i ];
             Button newButton = new Button {

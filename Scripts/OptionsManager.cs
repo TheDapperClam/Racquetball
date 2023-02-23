@@ -15,6 +15,9 @@ public class OptionsManager : Menu
     private OptionButton resolutionOptionButton;
     private string saveFile;
 
+    /// <summary>
+    /// Dictionary for all of our options, and their default values.
+    /// </summary>
     private static readonly Dictionary<string, OptionsProperty> properties = new Dictionary<string, OptionsProperty> () {
         { "Fullscreen", new OptionsProperty ( "Fullscreen Checkbox", "True" ) },
         { "Resolution", new OptionsProperty ( "Resolution Option Button", "0" ) },

@@ -1,3 +1,6 @@
+/// <summary>
+/// Struct for a property in our game options.
+/// </summary>
 public struct OptionsProperty
 {
     public string Name;

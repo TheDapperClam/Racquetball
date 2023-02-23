@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+/// <summary>
+/// Class for managing the high scores for our game.
+/// </summary>
 public class HighScores : Node
 {
     private const string HIGH_SCORE_FORMAT = "{0} - {1}";
@@ -16,6 +19,9 @@ public class HighScores : Node
     [Export] private readonly string filename;
     private Score score;
 
+    /// <summary>
+    /// Function for creating the directory of our save file.
+    /// </summary>
     private static void CreateDirectory () {
         baseDirectory = string.Format ( baseDirectory, System.Environment.GetFolderPath ( System.Environment.SpecialFolder.ApplicationData ) );
         if ( System.IO.Directory.Exists ( baseDirectory ) )
@@ -23,10 +29,19 @@ public class HighScores : Node
         System.IO.Directory.CreateDirectory ( baseDirectory );
     }
 
+    /// <summary>
+    /// Function for loading our previously loaded save file.
+    /// </summary>
+    /// <returns>List of scores</returns>
     public List<string> Load () {
         return Load ( filename );
     }
 
+    /// <summary>
+    /// Function for loading our save file
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <returns>List of scores</returns>
     public static List<string> Load ( string filename ) {
         CreateDirectory ();
         string path = System.IO.Path.Combine ( baseDirectory, filename );
@@ -40,6 +55,7 @@ public class HighScores : Node
                 index++;
                 string line = reader.ReadLine ();
                 if ( index >= highScores.Count )
+                    // Our save file contains more scores than we though, so extend the list.
                     highScores.Add ( line );
                 else
                     highScores[ index ] = line;
@@ -48,6 +64,11 @@ public class HighScores : Node
         }
     }
 
+    /// <summary>
+    /// Parse a score in string format.
+    /// </summary>
+    /// <param name="score"></param>
+    /// <returns>Array of score data</returns>
     public static Array ParseScore ( string score ) {
         string[] data = score.Split ( " - " );
         return new Array () { data[ 0 ], int.Parse ( data[ 1 ] ) };
@@ -57,6 +78,10 @@ public class HighScores : Node
         score = GetNodeOrNull<Score> ( scoreNodePath );
     }
 
+    /// <summary>
+    /// Function for adding our current score to the list of high scores.
+    /// </summary>
+    /// <param name="initials"></param>
     public void Save ( string initials = DEFAULT_INITIALS ) {
         if ( score == null )
             return;
@@ -67,6 +92,7 @@ public class HighScores : Node
         int insertionPoint = -1;
         if ( scoreNode == null )
             return;
+        // We want to insert our new score based on where it ranks compared to high scores.
         for ( int i = highScores.Count - 1; i >= 0; i-- ) {
             Array scoreData = ParseScore ( highScores[ i ] );
             int oldScore = (int) scoreData[ 1 ];
@@ -76,8 +102,10 @@ public class HighScores : Node
                 break;
         }
         if ( insertionPoint < 0 )
+            // The new score hasn't beaten any current ones.
             return;
         highScores.Insert ( insertionPoint, string.Format ( HIGH_SCORE_FORMAT, initials, scoreNode.Points ) );
+        // We want to remove any scores that are now out or range of our top scores.
         highScores.RemoveRange ( MAX_HIGH_SCORES, highScores.Count - MAX_HIGH_SCORES );
         using ( StreamWriter writer = new StreamWriter ( path ) ) {
             foreach ( string newHighScore in highScores )

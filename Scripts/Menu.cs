@@ -1,5 +1,8 @@
 using Godot;
 
+/// <summary>
+/// Class for our UI menus.
+/// </summary>
 public class Menu : Control
 {
     [Signal] public delegate void on_show ();
@@ -12,12 +15,19 @@ public class Menu : Control
     protected Control joypadStartNode;
     private Menu previousMenu;
 
+    /// <summary>
+    /// Function for collecting garbage, and then changing the scene.
+    /// </summary>
+    /// <param name="scene"></param>
     protected void ChangeScene ( PackedScene scene ) {
-        // Since changing to a different scene takes a bit of time, we'll also clean up any garbage that we currently have
         System.GC.Collect ();
         GetTree ().ChangeSceneTo ( scene );
     }
 
+    /// <summary>
+    /// Function for checking if this menu should be focused, and then doing so if yes.
+    /// </summary>
+    /// <param name="keepPreviousOwner"></param>
     protected void CheckIfShouldFocus ( bool keepPreviousOwner = false ) {
         if ( !Visible )
             return;
@@ -28,14 +38,25 @@ public class Menu : Control
         joypadStartNode.GrabFocus ();
     }
 
+    /// <summary>
+    /// Function for when a gamepad is connected or disconnected.
+    /// </summary>
+    /// <param name="device"></param>
+    /// <param name="connected"></param>
     protected void JoyConnectionChanged ( int device, bool connected ) {
         CheckIfShouldFocus ( true );
     }
 
+    /// <summary>
+    /// Function for when our menu is hidden.
+    /// </summary>
     protected virtual void OnHide () {
 
     }
 
+    /// <summary>
+    /// Function for when our menu is shown.
+    /// </summary>
     protected virtual void OnShow () {
 
     }
@@ -53,16 +74,22 @@ public class Menu : Control
     }
 
     /// <summary>
-    /// Ready function used for menus to avoid overriding important menu code
+    /// Ready function used for menus to avoid overriding important menu code.
     /// </summary>
     protected virtual void _ReadyMenu () {
 
     }
 
+    /// <summary>
+    /// Function for quitting the game.
+    /// </summary>
     public void Quit () {
         GetTree ().Quit ();
     }
 
+    /// <summary>
+    /// Function for when the visability of our menu changes
+    /// </summary>
     protected void VisibilityChanged () {
         if ( Visible ) {
             previousMenu = currentMenu;

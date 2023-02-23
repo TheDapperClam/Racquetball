@@ -29,11 +29,19 @@ public class Racket : Area2D
     private float swingTime;
     private Vector2 swingDirection = Vector2.Down;
 
+    /// <summary>
+    /// Function for aiming our racket in a given direction.
+    /// </summary>
+    /// <param name="direction"></param>
     public void Aim ( Vector2 direction ) {
         Rotation = direction.Angle () + ANGLE_OFFSET;
         swingDirection = direction.Normalized ();
     }
 
+    /// <summary>
+    /// Function for when a physics body enters our rackets hitbox.
+    /// </summary>
+    /// <param name="body"></param>
     private void BodyEntered ( Node body ) {
         if ( !cancelSwing && !ballHit && body.GetType () == typeof ( Ball ) ) {
             ballHit = true;
@@ -43,6 +51,9 @@ public class Racket : Area2D
         }
     }
 
+    /// <summary>
+    /// Function for when we want to buffer a swing input.
+    /// </summary>
     public void BufferSwing () {
         if ( GetTime () > swingTime ) {
             ballHit = false;
@@ -50,11 +61,18 @@ public class Racket : Area2D
         }
     }
 
+    /// <summary>
+    /// Function for when we want to cancel a swing.
+    /// </summary>
     public void Cancel () {
         cancelSwing = true;
         ballHit = false;
     }
 
+    /// <summary>
+    /// Function for getting the current time in seconds.
+    /// </summary>
+    /// <returns></returns>
     private float GetTime () {
         float time = OS.GetTicksMsec () / 1000.0f;
         return time;
@@ -75,11 +93,15 @@ public class Racket : Area2D
         Monitoring = false;
     }
 
+    /// <summary>
+    /// Function for swinging our racket.
+    /// </summary>
     private void Swing () {
         if ( !isSwinging )
             return;
         if ( ballToServe != null && !ballToServe.Served ) {
             Vector2 servePoint = raycast.IsColliding () ? raycast.GetCollisionPoint () : GlobalPosition + swingDirection * serveOffset;
+            // If the ball node is our child, we don't want its movement to be affected by our movement.
             ballToServe.SetAsToplevel ( true );
             ballToServe.GlobalPosition = servePoint;
         }
